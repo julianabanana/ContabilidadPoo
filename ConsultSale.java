@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Control;
 
 import java.sql.PreparedStatement;
@@ -24,10 +19,11 @@ public class ConsultSale extends Conexion{
             statement.setInt(2,sale.getIdproducto());
             statement.setFloat(3,sale.getCosto());
             statement.setInt(4,sale.getCantidad());
-            quantity(sale);
-            transaction(sale);
-            statement.execute();
-            return true;
+            if(quantity(sale) &&   transaction(sale)){
+                statement.execute();
+                return true;
+            }
+            return false;
         } catch (SQLException ex) {
             Logger.getLogger(ConsultSale.class.getName()).log(Level.SEVERE, null, ex);
             return false;
@@ -38,35 +34,6 @@ public class ConsultSale extends Conexion{
 		System.err.println(e);
             }
 	}
-        
-    }
-    public boolean search(Sale sale){
-        PreparedStatement statement;
-        ResultSet rs;
-        Connection c= getConexion();
-        String sql="SELECT * FROM venta WHERE idventa=?";
-        try {
-            statement =c.prepareStatement(sql);
-            statement.setInt(1, sale.getIdventa());
-            rs=statement.executeQuery();
-            if(rs.next()){
-                sale.setCantidad(rs.getInt("cantidad"));
-                sale.setCosto(rs.getFloat("costo"));
-                sale.setIdproducto(rs.getInt("idproducto"));
-                sale.setIdcliente(rs.getInt("idcliente"));
-                return true;
-            }
-            return false;
-        } catch (SQLException ex) {
-            Logger.getLogger(ConsultSale.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }finally{
-            try{
-                c.close();
-            }catch(SQLException e){
-                System.out.println(e);
-            }
-        }
         
     }
     public boolean modify(Sale sale, int amount){
@@ -103,8 +70,10 @@ public class ConsultSale extends Conexion{
             statement.setInt(1,sale.getIdproducto());
             rs=statement.executeQuery();
             if(rs.next() ){
-                modify(sale,rs.getInt("cantidad")-q);
-                return true;
+                if(rs.getInt("cantidad")>=q){
+                    modify(sale,rs.getInt("cantidad")-q);
+                    return true;
+                }
             }
             return false;
         } catch (SQLException ex) {
