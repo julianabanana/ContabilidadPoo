@@ -2,7 +2,7 @@ package Control;
 
 public class Purchase {
 	
-	private String idcompra;
+	private int idcompra;
 	private String idproducto;
 	private String proveedor;
 	private int cantidad;
@@ -16,10 +16,10 @@ public class Purchase {
 	public void setProveedor(String proveedor) {
 		this.proveedor = proveedor;
 	}
-	public String getIdcompra() {
+	public int getIdcompra() {
 		return idcompra;
 	}
-	public void setIdcompra(String idcompra) {
+	public void setIdcompra(int idcompra) {
 		this.idcompra = idcompra;
 	}
 	public String getIdproducto() {
@@ -49,8 +49,5 @@ public class Purchase {
 	public void setCostoTotal2(int costoTotal) {
 		this.costoTotal = costoTotal;
 	}
-	
-	
-	
-
 }
+
