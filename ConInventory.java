@@ -21,6 +21,7 @@ public class ConInventory implements ActionListener{
 		this.frame = frame2;
 		this.frame.btnBuscar.addActionListener(this);
 		this.frame.btnAnadir.addActionListener(this);
+		this.frame.btnEliminar.addActionListener(this);
 		
 	}
 	//method for initializing the view (title and location)
