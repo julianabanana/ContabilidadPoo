@@ -21,10 +21,10 @@ public class ConsultPurchase extends Conexion {
 		
 		try {
 			statement = conex.prepareStatement(sql);
-			statement.setString(1, purchase.getIdproducto());
+			statement.setInt(1, purchase.getIdproducto());
 			statement.setInt(2, purchase.getCantidad());
 			statement.setInt(3, purchase.getCostoTotal());
-			statement.setString(4, purchase.getProveedor());
+			statement.setInt(4, purchase.getProveedor());
 			quantity(purchase);
 			transaction(purchase,purchase.getCostoTotal());
 			statement.execute();
@@ -61,11 +61,11 @@ public class ConsultPurchase extends Conexion {
 			if(res.next()){
 				
 				purchase.setIdcompra(res.getInt("idcompra"));
-				purchase.setIdproducto(res.getString("idproducto"));
-				purchase.setIdproducto(res.getString("nombre"));
-				purchase.setCantidad(Integer.parseInt(res.getString("cantidad")));
-				purchase.setCostoTotal2(Integer.parseInt(res.getString("costo")));
-				purchase.setIdproducto(res.getString("proveedor"));
+				purchase.setIdproducto(res.getInt("idproducto"));
+				purchase.setIdproducto(res.getInt("nombre"));
+				purchase.setCantidad(res.getInt("cantidad"));
+				purchase.setCostoTotal2(res.getInt("costo"));
+				purchase.setIdproducto(res.getInt("proveedor"));
 				return true;
 			}
 			
@@ -94,14 +94,14 @@ public class ConsultPurchase extends Conexion {
 		
 		try {
 			statement = conex.prepareStatement(sql);
-			statement.setString(1, purchase.getIdproducto());
+			statement.setInt(1, purchase.getIdproducto());
 			res = statement.executeQuery();
 			System.out.println("producto encontrado");
 			
 			if(res.next()){
 				
 				modify(purchase, purQuantity+res.getInt("cantidad"));
-				purchase.setIdproducto(res.getString("idproducto"));
+				purchase.setIdproducto(res.getInt("idproducto"));
 				
 				return true;
 			}
