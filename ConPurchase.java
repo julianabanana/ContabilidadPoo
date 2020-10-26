@@ -1,7 +1,6 @@
 package Control;
 
 import java.awt.event.*;
-
 import javax.swing.JOptionPane;
 import Graphic.FramePurchase;
 
@@ -33,7 +32,7 @@ public class ConPurchase implements ActionListener{
 		//Adding button
 		if(e.getSource() == frame.btnAnadir){
 			purchase.setIdproducto(frame.txtIdProducto.getText());
-			purchase.setIdcompra(frame.txtIdCompra.getText());
+			purchase.setIdcompra(Integer.valueOf(frame.txtIdCompra.getText()));
 			purchase.setProveedor(frame.txtProveedor.getText());
 			purchase.setCantidad(Integer.parseInt(frame.txtCantidad.getText()));
 			purchase.setCostoIndividual(Integer.parseInt(frame.txtCostoIndividual.getText()));
@@ -48,7 +47,7 @@ public class ConPurchase implements ActionListener{
 		}
 		//Search button
 		if(e.getSource() == frame.btnBuscar){
-			purchase.setIdcompra(frame.txtIdCompra.getText());
+			purchase.setIdcompra(Integer.valueOf(frame.txtIdCompra.getText()));
 			if(query.search(purchase)){
 				
 				frame.txtIdCompra.setText(String.valueOf(purchase.getIdcompra()));
