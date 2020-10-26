@@ -21,7 +21,6 @@ public class ConInventory implements ActionListener{
 		this.frame = frame2;
 		this.frame.btnBuscar.addActionListener(this);
 		this.frame.btnAnadir.addActionListener(this);
-		this.frame.btnEliminar.addActionListener(this);
 		
 	}
 	//method for initializing the view (title and location)
@@ -36,7 +35,6 @@ public class ConInventory implements ActionListener{
 		if(e.getSource() == frame.btnAnadir){
 			inventory.setNombre(frame.txtNombre.getText());
 			inventory.setCantidad(Integer.parseInt(frame.txtCantidad.getText()));
-			inventory.setPrecio(Integer.parseInt(frame.txtPrecio.getText()));
 			clean();
 			if(query.register(inventory)){
 				JOptionPane.showMessageDialog(null, "Nuevo Producto guardado");
@@ -47,7 +45,7 @@ public class ConInventory implements ActionListener{
 		}
 		//Delete button
 		if(e.getSource() == frame.btnEliminar){
-			inventory.setNombre(frame.txtNombre.getText());
+			inventory.setIdproducto(Integer.parseInt(frame.txtIdProducto.getText()));
 			clean();
 			if(query.delete(inventory)){					
 				JOptionPane.showMessageDialog(null, "Producto eliminado");
@@ -76,6 +74,6 @@ public class ConInventory implements ActionListener{
 		frame.txtIdProducto.setText(null);
 		frame.txtNombre.setText(null);
 		frame.txtCantidad.setText(null);
-		frame.txtPrecio.setText(null);
 	}
+	
 }
