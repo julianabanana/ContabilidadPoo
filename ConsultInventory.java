@@ -13,15 +13,17 @@ public class ConsultInventory extends Conexion{
 		PreparedStatement statement = null;
 		Connection conex = getConexion();
 		
-		String sql = "INSERT  INTO Inventario (nombre, cantidad) VALUES(?,?)";
+		String sql = "INSERT  INTO Inventario (nombre,cantidad,precio) VALUES(?,?,?)";
 			
 		try {
 			statement = conex.prepareStatement(sql);
 			statement.setString(1, inventory.getNombre());
 			statement.setInt(2, inventory.getCantidad());
+			statement.setInt(3, inventory.getPrecio());
 			statement.execute();
 			return true;
 		}catch(SQLException e) {
+			System.out.println("Error anadiendo al inventario");
 			System.err.println(e);
 			return false;
 				
@@ -30,8 +32,8 @@ public class ConsultInventory extends Conexion{
 				conex.close();
 			}catch(SQLException e) {
 				System.err.println(e);
-				}
 			}
+		}
 	}
 	public boolean search(Inventory inventory) {
 		
@@ -65,8 +67,8 @@ public class ConsultInventory extends Conexion{
 				conex.close();
 			}catch(SQLException e) {
 				System.err.println(e);
-				}
 			}
+		}
 	}
 	public boolean delete(Inventory inventory) {
 		
@@ -89,8 +91,8 @@ public class ConsultInventory extends Conexion{
 				conex.close();
 			}catch(SQLException e) {
 				System.err.println(e);
-				}
 			}
+		}
 	}
 	
 }
