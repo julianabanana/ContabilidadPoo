@@ -55,12 +55,12 @@ public class ConsultPurchase extends Conexion {
 		
 		try {
 			statement = conex.prepareStatement(sql);
-			statement.setString(1, purchase.getIdcompra());
+			statement.setInt(1, purchase.getIdcompra());
 			res = statement.executeQuery();
 			
 			if(res.next()){
 				
-				purchase.setIdcompra(res.getString("idcompra"));
+				purchase.setIdcompra(res.getInt("idcompra"));
 				purchase.setIdproducto(res.getString("idproducto"));
 				purchase.setIdproducto(res.getString("nombre"));
 				purchase.setCantidad(Integer.parseInt(res.getString("cantidad")));
