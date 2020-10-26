@@ -3,17 +3,17 @@ package Control;
 public class Purchase {
 	
 	private int idcompra;
-	private String idproducto;
-	private String proveedor;
+	private int idproducto;
+	private int proveedor;
 	private int cantidad;
 	private int costoIndividual;
 	private int costoTotal;
 	
 	
-	public String getProveedor() {
+	public int getProveedor() {
 		return proveedor;
 	}
-	public void setProveedor(String proveedor) {
+	public void setProveedor(int proveedor) {
 		this.proveedor = proveedor;
 	}
 	public int getIdcompra() {
@@ -22,10 +22,10 @@ public class Purchase {
 	public void setIdcompra(int idcompra) {
 		this.idcompra = idcompra;
 	}
-	public String getIdproducto() {
+	public int getIdproducto() {
 		return idproducto;
 	}
-	public void setIdproducto(String idproducto) {
+	public void setIdproducto(int idproducto) {
 		this.idproducto = idproducto;
 	}
 	public int getCantidad() {
@@ -50,4 +50,3 @@ public class Purchase {
 		this.costoTotal = costoTotal;
 	}
 }
-
