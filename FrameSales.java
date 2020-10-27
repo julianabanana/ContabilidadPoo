@@ -20,51 +20,23 @@ import javax.swing.JTable;
 
 import java.sql.*;
 import Control.Conexion;
+import Control.ConsultClient;
+import Control.ConsultInventory;
+import Control.Sale;
+import java.awt.event.ActionListener;
 
 
 public class FrameSales extends JFrame {
-
-	private JPanel contentPane;
-	private JTextField textField;
-	private JTable table;
-	public Conexion con;
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FrameSales frame = new FrameSales();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	public void llenarCombo(JComboBox cbo, String tabla, String columna, Conexion con){
+	public JPanel contentPane;
+	private JTextField textFieldCantidad;
+	private JTable table; 
+        private JComboBox comboBoxCliente;
+        private JComboBox comboBoxProducto;
+        private JButton btnAnadirProducto;
+        private  JButton btnGenerarVenta;
+	private JLabel lblResult;
+        public Conexion con;
         
-		PreparedStatement ps = null;
-		ResultSet res = null;
-		Connection conex = con.getConexion();
-		
-		try 
-        {
-            
-            String sql = "SELECT * FROM "+tabla;
-            ps = conex.prepareStatement(sql);
-            res = ps.executeQuery();
-            
-            while(res.next()) {
-            	cbo.addItem(res.getString(columna));
-            }
-            res.close();
-        } 
-        catch (SQLException e) 
-        {
-            System.err.println(e.toString());
-        }
-    }
 	
 	public FrameSales() {
 		setForeground(Color.WHITE);
@@ -91,24 +63,24 @@ public class FrameSales extends JFrame {
 		lblProducto.setForeground(Color.WHITE);
 		JLabel lblNewLabel = new JLabel("Cantidad:");
 		lblNewLabel.setForeground(Color.WHITE);
-		JLabel lblResult = new JLabel("");
+		lblResult = new JLabel("");
 		lblResult.setForeground(Color.WHITE);
 		
 		//comboboxes
 		con = new Conexion();
-		JComboBox comboBoxCliente = new JComboBox();
+		comboBoxCliente = new JComboBox();
 		llenarCombo(comboBoxCliente, "Clientes", "nombre", con);
-		JComboBox comboBoxProducto = new JComboBox();
+		comboBoxProducto = new JComboBox();
 		llenarCombo(comboBoxProducto, "Inventario", "nombre", con);
 		
 		
 		//text field
-		textField = new JTextField();
-		textField.setColumns(10);
+		textFieldCantidad = new JTextField("");
+		textFieldCantidad.setColumns(10);
 		
 		//buttons
-		JButton btnAnadirProducto = new JButton("Añadir producto");
-		JButton btnGenerarVenta = new JButton("Generar Venta");
+		btnAnadirProducto = new JButton("Añadir producto");
+		btnGenerarVenta = new JButton("Generar Venta");
 		
 		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
@@ -132,7 +104,7 @@ public class FrameSales extends JFrame {
 												.addComponent(lblNewLabel)))
 										.addPreferredGap(ComponentPlacement.RELATED)
 										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-											.addComponent(textField, GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+											.addComponent(textFieldCantidad, GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
 											.addComponent(comboBoxCliente, 0, 185, Short.MAX_VALUE)
 											.addComponent(comboBoxProducto, 0, 185, Short.MAX_VALUE)))
 									.addGroup(gl_contentPane.createSequentialGroup()
@@ -172,7 +144,7 @@ public class FrameSales extends JFrame {
 								.addComponent(lblProducto))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textFieldCantidad, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblNewLabel))
 							.addGap(18)
 							.addComponent(btnAnadirProducto)))
@@ -188,5 +160,88 @@ public class FrameSales extends JFrame {
 		);
 		contentPane.setLayout(gl_contentPane);
 	}
-}
+        //Accesores Botones
+        public void addALAnadirProducto(ActionListener al){
+            this.btnAnadirProducto.addActionListener(al);
+        }
+        public void addALGenerarVenta(ActionListener al){
+            this.btnGenerarVenta.addActionListener(al);
+        }
 
+        public JButton getBtnAnadirProducto() {
+            return btnAnadirProducto;
+        }
+
+        public JButton getBtnGenerarVenta() {
+            return btnGenerarVenta;
+        }
+        //Limpíadores de labels
+        public void newSale(){
+            cleanLabels();
+            this.lblResult.setText("");
+        }
+        public void cleanLabels(){
+            this.textFieldCantidad.setText("");
+            this.comboBoxProducto.setSelectedIndex(0);
+        }
+        public int getCantidadInput(){
+            return Integer.parseInt(textFieldCantidad.getText());
+        }  
+        public String getNameCliente(){
+            
+            return String.valueOf(comboBoxCliente.getSelectedItem());
+        }
+        public String getNameProducto(){
+            return String.valueOf(comboBoxProducto.getSelectedItem());
+        }
+        public int getIdcliente(){
+            ConsultClient search=new ConsultClient();
+            return search.getIdcliente(getNameCliente());
+        }
+        public int getIdproducto(){
+            ConsultInventory search=new ConsultInventory();
+            System.out.println("Id producto"+search.getIdproducto(getNameProducto()));
+            return search.getIdproducto(getNameProducto());
+        }
+        
+        //
+        public void anadirATabla(Sale s){
+            
+        }
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					FrameSales frame = new FrameSales();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	public static void llenarCombo(JComboBox cbo, String tabla, String columna, Conexion con){
+        
+		PreparedStatement ps ;
+		ResultSet res ;
+		Connection conex = con.getConexion();
+		
+		try 
+        {
+            
+            String sql = "SELECT * FROM "+tabla;
+            ps = conex.prepareStatement(sql);
+            res = ps.executeQuery();
+            
+            while(res.next()) {
+            	cbo.addItem(res.getString(columna));
+            }
+            res.close();
+        } 
+        catch (SQLException e) 
+        {
+            System.err.println(e.toString());
+        }
+    }
+}
