@@ -10,9 +10,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 public class ConsultSale extends Conexion{
     public boolean register(Sale sale){
+        
         PreparedStatement statement;
         Connection c=getConexion();
-        String sql="INSERT INTO ventas (idcliente,idproducto,costo,cantidad) VALUES (?,?,?,?)";
+        String sql="INSERT INTO Ventas (idcliente,idproducto,costo,cantidad) VALUES (?,?,?,?)";
         try {
             statement= c.prepareStatement(sql);
             statement.setInt(1,sale.getIdcliente());
@@ -39,16 +40,16 @@ public class ConsultSale extends Conexion{
     public boolean modify(Sale sale, int amount){
         PreparedStatement ps;
         Connection c=getConexion();
-        String sql="UPDATE inventario SET cantidad=? WHERE idproducto=?";
+        String sql="UPDATE Inventario SET cantidad=? WHERE idproducto=?";
         try {
             ps=c.prepareStatement(sql);
             ps.setInt(1, amount);
-            ps.execute();
-
+            ps.setInt(2,sale.getIdproducto());
+            ps.executeUpdate();
+            
             return true;
         } catch (SQLException ex) {
             System.err.println(ex);
-            
             return false;
         }finally {
            try {
@@ -60,11 +61,12 @@ public class ConsultSale extends Conexion{
             
     }
     public boolean quantity(Sale sale){
+        
         PreparedStatement statement;
         ResultSet rs;
         Connection c=getConexion();
         int q=sale.getCantidad();
-        String sql="SELECT * FROM inventario WHERE idproducto=?";
+        String sql="SELECT * FROM Inventario WHERE idproducto=?";
         try {
             statement=c.prepareStatement(sql);
             statement.setInt(1,sale.getIdproducto());
@@ -96,14 +98,16 @@ public class ConsultSale extends Conexion{
 	String strDate = formatter.format(date);
         PreparedStatement ps;
         Connection c=getConexion();
-        String sql="INSTER INTO contabilidad (tipo, neto, ganancia, fecha) VALUES";
+        String sql="INSERT INTO Contabilidad (tipo, neto, ganancia, fecha) VALUES (?,?,?,?)";
         try {
+            
             ps=c.prepareStatement(sql);
             ps.setString(1,"venta");
             ps.setFloat(2,sale.getCosto() );
             ps.setFloat(3,sale.getCosto() );
             ps.setString(4,strDate);
             ps.execute();
+            
             return true;
         } catch (SQLException e) {
             System.err.println(e);
