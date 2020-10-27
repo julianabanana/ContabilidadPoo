@@ -23,7 +23,7 @@ public class ConsultInventory extends Conexion{
 		PreparedStatement statement ;
 		Connection conex = getConexion();
 		
-		String sql = "INSERT  INTO Inventario (nombre,cantidad,precio) VALUES(?,?,?)";
+		String sql = "INSERT  INTO inventario (nombre,cantidad,precio) VALUES(?,?,?)";
 			
 		try {
 			statement = conex.prepareStatement(sql);
@@ -46,7 +46,7 @@ public class ConsultInventory extends Conexion{
 		ResultSet res = null;
 		Connection conex = getConexion();
 		
-		String sql = "SELECT * FROM Inventario WHERE nombre=?";
+		String sql = "SELECT * FROM inventario WHERE nombre=?";
 		
 		try {
 			statement = conex.prepareStatement(sql);
@@ -58,6 +58,7 @@ public class ConsultInventory extends Conexion{
 				inventory.setIdproducto(Integer.parseInt(res.getString("idproducto")));
 				inventory.setNombre(res.getString("nombre"));
 				inventory.setCantidad(res.getInt("cantidad"));
+                                inventory.setPrecio(res.getInt("precio"));
 				return true;
 			}
 			
@@ -75,7 +76,7 @@ public class ConsultInventory extends Conexion{
 		PreparedStatement statement ;
 		Connection conex = getConexion();
 		
-		String sql = "DELETE FROM Inventario WHERE nombre=?";
+		String sql = "DELETE FROM inventario WHERE nombre=?";
 		
 		try {
 			statement = conex.prepareStatement(sql);
@@ -94,14 +95,15 @@ public class ConsultInventory extends Conexion{
             ResultSet rs;
 	    Connection conex = getConexion();
 		
-            String sql = "SELECT * FROM Inventario WHERE nombre=?";
+            String sql = "SELECT * FROM inventario WHERE nombre=?";
             try {
                 statement=conex.prepareStatement(sql);
-                statement.setString(1, sql);
+                statement.setString(1, nombre);
                 rs=statement.executeQuery();
                 if(rs.next()){
                     return rs.getInt("idproducto");
                 }
+                
                 return -1;
             } catch (SQLException ex) {
                 Logger.getLogger(ConsultInventory.class.getName()).log(Level.SEVERE, null, ex);
@@ -110,5 +112,28 @@ public class ConsultInventory extends Conexion{
                 close(conex);
             }
         }
+        public float getCosto(int id){
+            PreparedStatement statement;
+            ResultSet rs;
+	    Connection conex = getConexion();
+		
+            String sql = "SELECT * FROM inventario WHERE idproducto=?";
+            try {
+                statement=conex.prepareStatement(sql);
+                statement.setInt(1, id);
+                rs=statement.executeQuery();
+                if(rs.next()){
+                    return rs.getFloat("precio");
+                }
+                
+                return -1;
+            } catch (SQLException ex) {
+                Logger.getLogger(ConsultInventory.class.getName()).log(Level.SEVERE, null, ex);
+                return -1;
+            }finally{
+                close(conex);
+            }
+        }
+        
 	
 }
