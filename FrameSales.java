@@ -24,6 +24,7 @@ import Control.ConsultClient;
 import Control.ConsultInventory;
 import Control.Sale;
 import java.awt.event.ActionListener;
+import javax.swing.table.DefaultTableModel;
 
 
 public class FrameSales extends JFrame {
@@ -35,6 +36,8 @@ public class FrameSales extends JFrame {
         private JButton btnAnadirProducto;
         private  JButton btnGenerarVenta;
 	private JLabel lblResult;
+        private DefaultTableModel modelo;
+        private float total=0;
         public Conexion con;
         
 	
@@ -50,7 +53,11 @@ public class FrameSales extends JFrame {
 		setContentPane(contentPane);
 		
 		//table
-		table = new JTable();
+                modelo=new DefaultTableModel();
+		table = new JTable(modelo);
+                startTable();
+                
+                
 		
 		//labels
 		JLabel label = new JLabel("");
@@ -177,18 +184,32 @@ public class FrameSales extends JFrame {
         }
         //Limpíadores de labels
         public void newSale(){
+            total=0;
             cleanLabels();
             this.lblResult.setText("");
+            this.comboBoxProducto.setSelectedIndex(0);
+            this.comboBoxCliente.setSelectedIndex(0);
+            removeTable();
+            
         }
         public void cleanLabels(){
             this.textFieldCantidad.setText("");
             this.comboBoxProducto.setSelectedIndex(0);
         }
+        public void setTotal(float amount){
+            if(amount>0){
+                total+=amount;
+                lblResult.setText(total+" $");
+            }
+        }
         public int getCantidadInput(){
-            return Integer.parseInt(textFieldCantidad.getText());
+            try{    
+                return Integer.parseInt(textFieldCantidad.getText());
+            }catch(NumberFormatException e){
+                return -1;
+            }
         }  
         public String getNameCliente(){
-            
             return String.valueOf(comboBoxCliente.getSelectedItem());
         }
         public String getNameProducto(){
@@ -200,13 +221,12 @@ public class FrameSales extends JFrame {
         }
         public int getIdproducto(){
             ConsultInventory search=new ConsultInventory();
-            System.out.println("Id producto"+search.getIdproducto(getNameProducto()));
             return search.getIdproducto(getNameProducto());
         }
         
         //
-        public void anadirATabla(Sale s){
-            
+        public void anadirATabla(String name, Sale sale){
+            modelo.addRow(new Object[]{name,sale.getCantidad()+"",sale.getCosto()+""});
         }
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -244,4 +264,20 @@ public class FrameSales extends JFrame {
             System.err.println(e.toString());
         }
     }
+        public void startTable(){
+            modelo=new DefaultTableModel();
+            table = new JTable(modelo);
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Unidades");
+            modelo.addColumn("Precio Neto");
+            modelo.addRow(new Object[]{"Nombre","Nombre","Precio Neto"});
+        }
+        public void removeTable(){
+            DefaultTableModel tb = (DefaultTableModel) table.getModel();
+            int a = table.getRowCount()-1;
+            for (int i = a; i >= 0; i--) {          
+                tb.removeRow(tb.getRowCount()-1);
+            }
+            startTable();
+        }
 }
