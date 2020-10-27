@@ -33,7 +33,6 @@ public class ConsultInventory extends Conexion{
 			statement.execute();
 			return true;
 		}catch(SQLException e) {
-			System.out.println("Error anadiendo al inventario");
 			System.err.println(e);
 			return false;
 		}finally {
