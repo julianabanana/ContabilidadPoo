@@ -1,114 +1,78 @@
 package Control;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.event.*;
 
-public class ConsultInventory extends Conexion{
+import javax.swing.JOptionPane;
+import Graphic.FramePurchase;
+
+public class ConPurchase implements ActionListener{
 	
-	//methods that the form will call
-        public static void close(Connection conex){
-            try {
-		conex.close();
-            }catch(SQLException e) {
-		System.err.println(e);
-            }
+	private Purchase purchase;
+	private ConsultPurchase query;
+	private FramePurchase frame;
 	
-        }
-		public boolean register(Inventory inventory) {
+	
+	//constructor
+	public ConPurchase(Purchase purchase, ConsultPurchase query, FramePurchase frame) {
 		
-		PreparedStatement statement ;
-		Connection conex = getConexion();
+		this.purchase = purchase;
+		this.query = query;
+		this.frame = frame;
+		this.frame.btnBuscar.addActionListener(this);
+		this.frame.btnAnadir.addActionListener(this);
 		
-		String sql = "INSERT  INTO Inventario (nombre,cantidad,precio) VALUES(?,?,?)";
-			
-		try {
-			statement = conex.prepareStatement(sql);
-			statement.setString(1, inventory.getNombre());
-			statement.setInt(2, inventory.getCantidad());
-			statement.setInt(3, inventory.getPrecio());
-			statement.execute();
-			return true;
-		}catch(SQLException e) {
-			System.out.println("Error anadiendo al inventario");
-			System.err.println(e);
-			return false;
-		}finally {
-                    close(conex);
-                }
 	}
-	public boolean search(Inventory inventory) {
-		
-		PreparedStatement statement = null;
-		ResultSet res = null;
-		Connection conex = getConexion();
-		
-		String sql = "SELECT * FROM Inventario WHERE nombre=?";
-		
-		try {
-			statement = conex.prepareStatement(sql);
-			statement.setString(1, inventory.getNombre());
-			res = statement.executeQuery();
-			
-			if(res.next()){
+	//method for initializing the view (title and location)
+	public void start() {
+		frame.setTitle("Purchase");
+		frame.setLocationRelativeTo(null);
+	}
+	
+	//methods that listen to the clicks (events)
+	public void actionPerformed(ActionEvent e){
+		//Adding button
+		if(e.getSource() == frame.btnAnadir){
+			purchase.setIdproducto(Integer.parseInt(frame.txtIdProducto.getText()));
+			purchase.setIdcompra(Integer.parseInt(frame.txtIdCompra.getText()));
+			purchase.setProveedor(Integer.parseInt(frame.txtProveedor.getText()));
+			purchase.setCantidad(Integer.parseInt(frame.txtCantidad.getText()));
+			purchase.setCostoIndividual(Integer.parseInt(frame.txtCostoIndividual.getText()));
+			purchase.setCostoTotal();
+			clean();
+			if(query.register(purchase)){
+				JOptionPane.showMessageDialog(null, "Compra guardado");
+			}else {
+				JOptionPane.showMessageDialog(null, "Ha ocurrido un error. Debe anadir numero del producto, proveedor, cantidad y costo individual.");
+
+			}
+		}
+		//Search button
+		if(e.getSource() == frame.btnBuscar){
+			purchase.setIdcompra(Integer.parseInt(frame.txtIdCompra.getText()));
+			if(query.search(purchase)){
 				
-				inventory.setIdproducto(Integer.parseInt(res.getString("idproducto")));
-				inventory.setNombre(res.getString("nombre"));
-				inventory.setCantidad(res.getInt("cantidad"));
-				return true;
+				frame.txtIdCompra.setText(String.valueOf(purchase.getIdcompra()));
+				frame.txtIdProducto.setText(purchase.getIdproducto()+"");
+				frame.txtProveedor.setText(purchase.getProveedor()+"");
+				frame.txtCantidad.setText(String.valueOf(purchase.getCantidad()));
+				frame.txtCostoIndividual.setText(String.valueOf(purchase.getCostoIndividual()));
+				frame.txtCostoTotal.setText(String.valueOf(purchase.getCostoTotal()));
+				
+			}else {
+				JOptionPane.showMessageDialog(null, "Compra no existente");
 			}
-			
-			return false;
-			
-		}catch(SQLException e) {
-			System.err.println(e);
-			return false;
-		}finally {
-                    close(conex);
-                }
+		}
+
 	}
-	public boolean delete(Inventory inventory) {
-		
-		PreparedStatement statement ;
-		Connection conex = getConexion();
-		
-		String sql = "DELETE FROM Inventario WHERE nombre=?";
-		
-		try {
-			statement = conex.prepareStatement(sql);
-			statement.setString(1, (inventory.getNombre()));
-			statement.execute();
-			return true;
-		}catch(SQLException e) {
-			System.err.println(e);
-			return false;
-		}finally {
-			close(conex);
-			}
+	
+	//method for cleaning the boxes
+	public void clean(){
+		frame.txtIdCompra.setText(null);
+		frame.txtIdProducto.setText(null);
+		frame.txtProveedor.setText(null);
+		frame.txtCantidad.setText(null);
+		frame.txtCostoIndividual.setText(null);
+		frame.txtCostoTotal.setText(null);
 	}
-        public int getIdproducto(String nombre){
-            PreparedStatement statement;
-            ResultSet rs;
-	    Connection conex = getConexion();
-		
-            String sql = "SELECT * FROM Inventario WHERE nombre=?";
-            try {
-                statement=conex.prepareStatement(sql);
-                statement.setString(1, sql);
-                rs=statement.executeQuery();
-                if(rs.next()){
-                    return rs.getInt("idproducto");
-                }
-                return -1;
-            } catch (SQLException ex) {
-                Logger.getLogger(ConsultInventory.class.getName()).log(Level.SEVERE, null, ex);
-                return -1;
-            }finally{
-                close(conex);
-            }
-        }
 	
 }
