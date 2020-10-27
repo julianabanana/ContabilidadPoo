@@ -23,29 +23,30 @@ public class ConSale implements ActionListener {
     }
     public void actionPerformed(ActionEvent e){
         if(e.getSource()==frame.getBtnAnadirProducto()){
-            sale.setCantidad(frame.getCantidadInput());
             
-            sale.setIdcliente(frame.getIdcliente());
-            sale.setIdproducto(frame.getIdproducto());
-            sale.setCosto((new ConsultInventory()).getCosto(sale.getIdproducto())*sale.getCantidad());
-            clean();
-            if(query.register(sale)){
-                frame.anadirATabla(sale);
-                JOptionPane.showMessageDialog(null, "Objeto añadido exitosamente.");
-                
-            }else {
-		JOptionPane.showMessageDialog(null, "Ha ocurrido un error. Debe registrar una cantidad, cliente y producto válido.");
-		}
+            sale.setCantidad(frame.getCantidadInput());
+                if(sale.getCantidad()>0){
+                sale.setIdcliente(frame.getIdcliente());
+                sale.setIdproducto(frame.getIdproducto());
+                sale.setCosto((new ConsultInventory()).getCosto(sale.getIdproducto())*sale.getCantidad());
+                if(query.register(sale)){
+                    frame.setTotal(sale.getCosto());
+                    frame.anadirATabla(frame.getNameProducto(),sale);
+                    JOptionPane.showMessageDialog(null, "Objeto añadido exitosamente.");
+
+                }else {
+                    JOptionPane.showMessageDialog(null, "Ha ocurrido un error. Debe registrar una cantidad, cliente y producto válido.");
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error. Debe registrar una cantidad válida.");
+            }
+            frame.cleanLabels();
         }
         if(e.getSource()==frame.getBtnGenerarVenta()){
-            cleanAll();
+            frame.newSale();
+            JOptionPane.showMessageDialog(null, "Venta realizada correctamente");
         }
     }
-    public void clean(){
-        frame.cleanLabels();
-    }
-    public void cleanAll(){
-        frame.newSale();
-    }
+    
 
 }
