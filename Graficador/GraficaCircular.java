@@ -9,6 +9,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 public class GraficaCircular {
     private final String titulo; //Titulo del gráfico
     private JFreeChart grafico; //El gráfico como tal

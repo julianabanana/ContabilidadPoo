@@ -36,6 +36,9 @@ public class GraficaBarras {
     public void reiniciarDataset(){
         crearDataset();
     }
+    public void anadirDato(double value,String categoria,String nombre){
+        this.datos.addValue(value,categoria,nombre); //Agrega una barra, dependiendo de la categoría se hace el color
+    }
     public void anadirDato(int value,String categoria,String nombre){
         this.datos.addValue(value,categoria,nombre); //Agrega una barra, dependiendo de la categoría se hace el color
     }
