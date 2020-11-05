@@ -34,11 +34,7 @@ public class ConsultPurchase extends Conexion {
 			return false;
 			
 		}finally {
-			try {
-				conex.close();
-			}catch(SQLException e) {
-				System.err.println(e);
-				}
+			close(conex);
 			}
 	}
 	
@@ -76,11 +72,7 @@ public class ConsultPurchase extends Conexion {
 			return false;
 			
 		}finally {
-			try {
-				conex.close();
-			}catch(SQLException e) {
-				System.err.println(e);
-				}
+			close(conex);
 			}
 	}
 	public boolean quantity(Purchase purchase) {
@@ -113,11 +105,7 @@ public class ConsultPurchase extends Conexion {
 			return false;
 			
 		}finally {
-			try {
-				conex.close();
-			}catch(SQLException e) {
-				System.err.println(e);
-				}
+			close(conex);
 			}
 	}
 	public boolean modify(Purchase purchase, int amount) {
@@ -136,11 +124,7 @@ public class ConsultPurchase extends Conexion {
 			return false;
 			
 		}finally {
-			try {
-				conex.close();
-			}catch(SQLException e) {
-				System.err.println(e);
-				}
+			close(conex);
 			}
 	}
 	public boolean transaction(Purchase purchase, int amount) {
@@ -168,11 +152,7 @@ public class ConsultPurchase extends Conexion {
 			return false;
 			
 		}finally {
-			try {
-				conex.close();
-			}catch(SQLException e) {
-				System.err.println(e);
-				}
+			close(conex);
 			}
 	}
 }

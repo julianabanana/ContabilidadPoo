@@ -10,15 +10,8 @@ import java.util.logging.Logger;
 public class ConsultInventory extends Conexion{
 	
 	//methods that the form will call
-        public static void close(Connection conex){
-            try {
-		conex.close();
-            }catch(SQLException e) {
-		System.err.println(e);
-            }
-	
-        }
-		public boolean register(Inventory inventory) {
+        
+	public boolean register(Inventory inventory) {
 		
 		PreparedStatement statement ;
 		Connection conex = getConexion();
@@ -105,7 +98,7 @@ public class ConsultInventory extends Conexion{
                 
                 return -1;
             } catch (SQLException ex) {
-                Logger.getLogger(ConsultInventory.class.getName()).log(Level.SEVERE, null, ex);
+                
                 return -1;
             }finally{
                 close(conex);

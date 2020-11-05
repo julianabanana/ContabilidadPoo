@@ -8,14 +8,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ConsultClient extends Conexion {
-	public static void close(Connection conex){
-            try {
-		conex.close();
-            }catch(SQLException e) {
-		System.err.println(e);
-            }
-	
-        }
 	//methods that the form will call
 	public boolean register(Client client) {
 		

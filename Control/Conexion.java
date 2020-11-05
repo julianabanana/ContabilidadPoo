@@ -24,5 +24,13 @@ public class Conexion {
 		}
 		return con;
 	}
+        public static void close(Connection conex){
+            try {
+		conex.close();
+            }catch(SQLException e) {
+		System.err.println(e);
+            }
+	
+        }
 
 }

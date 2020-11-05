@@ -29,11 +29,7 @@ public class ConsultSale extends Conexion{
             Logger.getLogger(ConsultSale.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }finally {
-            try {
-		c.close();
-            }catch(SQLException e) {
-		System.err.println(e);
-            }
+            close(c);
 	}
         
     }
@@ -52,11 +48,7 @@ public class ConsultSale extends Conexion{
             System.err.println(ex);
             return false;
         }finally {
-           try {
-		c.close();
-            }catch(SQLException e) {
-		System.err.println(e);
-		}
+           close(c);
             } 
             
     }
@@ -82,12 +74,7 @@ public class ConsultSale extends Conexion{
             System.out.println(ex);
                 return false;
         }finally{
-            try {
-        	c.close();
-
-            }catch(SQLException e) {
-		System.err.println(e);
-		}
+            close(c);
             }
         
         
@@ -113,11 +100,7 @@ public class ConsultSale extends Conexion{
             System.err.println(e);
             return false;
         }finally{
-            try{
-                c.close();
-            }catch(SQLException e){
-                System.err.println(e);
-            }
+            close(c);
         }
         
     }
