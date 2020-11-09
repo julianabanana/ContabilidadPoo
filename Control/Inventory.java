@@ -5,7 +5,7 @@ public class Inventory {
 	private int idproducto;
 	private String nombre;
 	private int cantidad;
-	private int precio;
+	private float precio;
 	
 	public int getIdproducto() {
 		return idproducto;
@@ -25,10 +25,10 @@ public class Inventory {
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
-	public int getPrecio() {
+	public float getPrecio() {
 		return precio;
 	}
-	public void setPrecio(int precio) {
+	public void setPrecio(float precio) {
 		this.precio = precio;
 	}
 
