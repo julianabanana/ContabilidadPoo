@@ -190,7 +190,6 @@ public class FrameSales extends JFrame {
             this.comboBoxProducto.setSelectedIndex(0);
             this.comboBoxCliente.setSelectedIndex(0);
             removeTable();
-            
         }
         public void cleanLabels(){
             this.textFieldCantidad.setText("");
@@ -275,9 +274,8 @@ public class FrameSales extends JFrame {
         public void removeTable(){
             DefaultTableModel tb = (DefaultTableModel) table.getModel();
             int a = table.getRowCount()-1;
-            for (int i = a; i >= 0; i--) {          
+            for (int i = a; i > 0; i--) {          
                 tb.removeRow(tb.getRowCount()-1);
             }
-            startTable();
         }
 }
